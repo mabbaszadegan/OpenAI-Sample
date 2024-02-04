@@ -45,7 +45,7 @@ flask --app main run
 
 We appreciate your interest in contributing to OpenAI-Sample! Your contributions help improve the project and make it more valuable for the community.
 
-## How to Contribute
+### How to Contribute
 
 1. **Fork the Repository:**
    Fork the OpenAI-Sample repository to your own GitHub account.
