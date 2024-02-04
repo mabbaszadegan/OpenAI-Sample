@@ -41,7 +41,7 @@ py -m venv ./venv
 # Example usage commands or code snippets
 flask --app main run   
 ```
-## Contributing to OpenAI-Sample
+## Contributing
 
 We appreciate your interest in contributing to OpenAI-Sample! Your contributions help improve the project and make it more valuable for the community.
 
