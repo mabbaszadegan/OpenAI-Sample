@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body dir="rtl">
+    <label>متن خود را وارد کنید</label>
+    <textarea type="text" name="gptText" id="gptText" style="width: 80%;height: 50px;"></textarea>
+    <input type="button" value="ارسال" onclick="getData()">
+    <hr>
+    <label id="resultSection"></label>
+</body>
+
+<script>
+    const getData = async () => {
+        try {
+            const message = document.getElementById('gptText').value;
+            if (!message) {
+                alert('لطفا متن را وارد کنید');
+                return;
+            }
+            document.getElementById("resultSection").innerHTML = 'لطفا منتظر بمانید...';
+            const response = await fetch(`/getData/${message}`);
+            const result = await response.json();
+            if(!result.succeed){
+                document.getElementById("resultSection").innerHTML = `<h4>${result.data['gpt-result']}</h4>`;
+                return;
+            }
+            data = result.data.data
+            document.getElementById("resultSection").innerHTML = '<h2>نتیجه</h2>';
+            data.forEach(element => {
+                Object.keys(element).forEach(key=>{
+                    document.getElementById("resultSection").innerHTML += `<h4>${key}: ${element[key]}<h4>`
+                });
+                document.getElementById("resultSection").innerHTML += `<br>`
+            });
+            document.getElementById("resultSection").innerHTML +=  `<h5>${result.data['gpt-result']}</h5>`
+
+        }
+        catch (err) {
+            document.getElementById("resultSection").innerHTML = err;
+        }
+    }
+</script>
+
+</html>
