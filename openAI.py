@@ -59,6 +59,10 @@ class openAIHelper:
         {
           "role": "user",
           "content": "return just T-SQL"
+        }, 
+        {
+          "role": "user",
+          "content": "please write T-sql script between ```sql and ```"
         },
         {
           "role": "user",
@@ -69,11 +73,11 @@ class openAIHelper:
       script = ''
       gpt_result = response.choices[0].message.content
       print(f'response.choices len: {len(response.choices)}')
-      scripts = re.findall(rf'{"###sql"}(.*?){"###"}', gpt_result.replace('\n','#N#').replace('```','###'))
+      scripts = re.findall(rf'{"###"}(.*?){"###"}', gpt_result.replace('\n','#N#').replace('```','###').replace('###sql','###'))
       if len(scripts) == 0:
-        script = gpt_result.replace('#N#','\n')
+        script = gpt_result
       else:
-        script = scripts[0].upper()
+        script = scripts[0].upper().replace('#N#',' ').replace('#N',' ')
       
       if("DELETE" in script or "UPDATE" in script or "INSERT" in script):
         return Result.fail(ErrorResult("متن شما شامل دستور غیرمجاز است"))
@@ -107,7 +111,15 @@ class openAIHelper:
       res = cur.execute(db_cmd)
       desc = res.description
       column_names = [col[0] for col in desc]
-      result["data"] = [dict(zip(column_names, row)) for row in res.fetchall()]
+      # result["data"] = [dict(zip(column_names, row)) for row in res.fetchall()]
+      for row in res.fetchall():
+        obj = {}
+        column_index = 0
+        for column in column_names:
+          obj[column] = str(row[column_index])
+          column_index += 1
+        result["data"].append(obj)
+
       # Do something with your result set, for example print out all the results:
       return Result.success(result)
     except Exception as err:
