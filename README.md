@@ -37,6 +37,49 @@ py -m venv ./venv
 ```
 
 ## Usage
+### Create .env file
+You must create a .env file for configure application
+
+```bash
+# Example .env file
+api_secret = "[your-api-key (https://platform.openai.com/api-keys)]"
+sql_schema = "
+CREATE TABLE Orders (
+      OrderID int,
+      CustomerID int,
+      OrderDate datetime,
+      OrderTime varchar(8),
+      PRIMARY KEY (OrderID)
+    );
+    
+    CREATE TABLE OrderDetails (
+      OrderDetailID int,
+      OrderID int,
+      ProductID int,
+      Quantity int,
+      PRIMARY KEY (OrderDetailID)
+    );
+    
+    CREATE TABLE Products (
+      ProductID int,
+      ProductName varchar(50),
+      Category varchar(50),
+      UnitPrice decimal(10, 2),
+      Stock int,
+      PRIMARY KEY (ProductID)
+    );
+    
+    CREATE TABLE Customers (
+      CustomerID int,
+      FirstName varchar(50),
+      LastName varchar(50),
+      Email varchar(100),
+      Phone varchar(20),
+      PRIMARY KEY (CustomerID)
+    );
+" 
+```
+
 ```bash
 # Example usage commands or code snippets
 flask --app main run   
